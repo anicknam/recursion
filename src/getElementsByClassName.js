@@ -4,7 +4,26 @@
 // };
 
 // But instead we're going to implement it from scratch:
-var getElementsByClassName = function(className
-) {
-  // your code here
+var getElementsByClassName = function(className){
+
+  //storage array
+  var result = [];
+
+  //recursive case
+  function matchNode(node){
+
+    if(_.contains(node.classList, className)) {
+      result.push(node);
+    }
+    // for (var childNode in node) {
+    //   if (node[childNode] == undefined) {return;}
+    //   matchNode(childNode);
+    // }
+    _.each(node.childNodes,function(child) {
+    matchNode(child);
+    });
+  }
+  matchNode(document.body);
+  return result;
 };
+
