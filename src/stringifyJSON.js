@@ -8,35 +8,41 @@ var stringifyJSON = function(obj) {
   var result = "";
 
   function typeID(sth){
-    if (sth == undefined) {return;}
-    if (sth.constructor === Object) {
+    if (typeof sth === "function" || sth === undefined) {
+      result += "";
+    } else if (sth === null || sth === true || sth === false) {
+      result+= String(sth);
+    } else if (sth.constructor === Object) {
       result+="{";
       for (var key in sth){
-        result+= "\""+String(key)+"\":";
-        typeID(sth[key]);
+        if (sth[key] === undefined || typeof sth[key] === "function"){
+          result+="";
+        } else {
+          result+= "\""+String(key)+"\":";
+          typeID(sth[key]);
+          result+=",";
+        }
       }
       result+="}";
-    }
-    else if (Array.isArray(sth)) {
+    } else if (Array.isArray(sth)) {
       result+= "[";
       for (var i=0;i<sth.length;i++){
         typeID(sth[i]);
+        result+=",";
       }
       result+="]";
-    } else if (sth == undefined || sth === true || sth === false){
-      result+= String(sth);
-    } else if (typeof sth === "function" || sth === undefined) {
-      result += "null";
+    } else if (typeof sth === "string") {
+      result+= "\""+sth+"\"";
     } else {
-      result+= String(sth)+",";
+      result+= String(sth);
     }
+
   }
 
-  (typeof obj === "number") ? result = String(obj): typeID(obj);
+  typeID(obj)
 
-  result=result.replace(/,}/,"}");
-  result=result.replace(/,]/,"]");
+  result=result.replace(/,}/g,"}");
+  result=result.replace(/,]/g,"]");
 
-  //return "\""+result+"\"";
   return result;
 };
