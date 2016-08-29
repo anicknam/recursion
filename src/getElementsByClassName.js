@@ -15,15 +15,15 @@ var getElementsByClassName = function(className){
     if(_.contains(node.classList, className)) {
       result.push(node);
     }
-    // for (var childNode in node) {
-    //   if (node[childNode] == undefined) {return;}
-    //   matchNode(childNode);
-    // }
+
     _.each(node.childNodes,function(child) {
     matchNode(child);
     });
-  }
+
+  };
+
   matchNode(document.body);
+
   return result;
 };
 
